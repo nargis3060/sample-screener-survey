@@ -1,0 +1,408 @@
+
+
+  <checkbox 
+   label="S_PastParticipation"
+   atleast="1"
+   atm1d:large_maxWidth="200px"
+   atm1d:showInput="0"
+   atm1d:viewMode="tiled"
+   randomize="0"
+   uses="atm1d.9">
+    <title>Have you participated in a market research study within the past 2 weeks, on any of the following topics?</title>
+    <comment><i>Select all that apply.</i></comment>
+    <row label="r1">[pipe: Clutter1] Products</row>
+    <row label="r2">[pipe: Category]</row>
+    <row label="r3">[pipe: Clutter2] Products</row>
+    <row label="r4">Alcoholic Beverages</row>
+    <row label="None" exclusive="1">None of these</row>
+  </checkbox>
+
+  <suspend/>
+
+  <term label="TERM_PastPar" cond="(S_PastParticipation.r2)">Past Participation</term>
+
+  <checkbox 
+   label="S_Industry"
+   atleast="1"
+   atm1d:large_maxWidth="200px"
+   atm1d:showInput="0"
+   atm1d:viewMode="tiled"
+   randomize="0"
+   uses="atm1d.9">
+    <title>Do you, or does anyone in your immediate family work for any of the following industries?</title>
+    <comment><i>Select all that apply.</i></comment>
+    <row label="r1">Market research or marketing</row>
+    <row label="r2">Advertising agency or public relations firms</row>
+    <row label="r3">A graphic design or packaging firm</row>
+    <row label="r4">A company involved in the manufacturing, distribution or sale of <b>[pipe: Clutter1]</b> products</row>
+    <row label="r5">A company involved in the manufacturing, distribution or sale of <b>[pipe: Clutter2]</b> products</row>
+    <row label="r6">A company involved in the manufacturing, distribution or sale of <b>[pipe: Category]</b></row>
+    <row label="None" exclusive="1">None of these</row>
+  </checkbox>
+
+  <suspend/>
+
+  <term label="TERM_Industry" cond="(S_Industry.r1 or S_Industry.r2 or S_Industry.r3 or S_Industry.r6)">Sensitive Industry</term>
+
+  <select 
+   label="S_GroceryShop"
+   randomize="0"
+   sliderpoints:sliderWidth="95%"
+   ss:questionClassNames="sq-sliderpoints"
+   uses="sliderpoints.3">
+    <title>How much of the household’s <b>(Immune Support/Immune Health Products)</b> grocery shopping do you, yourself, do? </title>
+    <comment><i>Select one response.</i></comment>
+    <choice label="r1"><span style="font-size: 10pt;" align="center">All of it<br /><img src="/survey/selfserve/1da7/191272/Cart4.png" constrain="true" height="50" title="" /></span></choice>
+    <choice label="r2"><span style="font-size: 10pt;" align="center">Half of it or more<br /><img src="/survey/selfserve/1da7/191272/Cart3.png" constrain="true" height="50" title="" /></span></choice>
+    <choice label="r3"><span style="font-size: 10pt;" align="center">Less than half<br /><img src="/survey/selfserve/1da7/191272/Cart1.png" constrain="true" height="50" title="" /></span></choice>
+    <choice label="r4"><span style="font-size: 10pt;" align="center">None of it<br /><img src="/survey/selfserve/1da7/191272/Cart0.png" constrain="true" height="50" title="" /></span></choice>
+  </select>
+
+  <suspend/>
+
+  <term label="TERM_HHShopping" cond="(S_GroceryShop.r3 or S_GroceryShop.r4)">Household Grocery Shopping</term>
+
+  <suspend/>
+
+  <radio 
+   label="S_Gender"
+   atm1d:showInput="0"
+   atm1d:viewMode="tiled"
+   shuffle="rows"
+   uses="atm1d.9">
+    <title>Which of the following best describes how you identify?</title>
+    <comment><i>Select one response.</i></comment>
+    <row label="r1">Male</row>
+    <row label="r2">Female</row>
+    <row label="r3">Non-Binary</row>
+    <row label="r4">Gender Non-Conforming</row>
+    <row label="r5">Gender Fluid</row>
+    <row label="r6" randomize="0">Prefer to self-identify</row>
+  </radio>
+
+  <suspend/>
+
+  <autofill label="gender" randomize="0" where="execute,survey,report">
+    <title>Gender for Real Eye</title>
+    <row label="r1" autofill="S_Gender.r1">1</row>
+    <row label="r2" autofill="S_Gender.r2">0</row>
+    <row label="r3" autofill="not(S_Gender.r1 or S_Gender.r2)">2</row>
+  </autofill>
+
+  <suspend/>
+
+  <text 
+   label="SelfIdentifyGender_OE"
+   cond="S_Gender.r6"
+   optional="0"
+   randomize="0"
+   size="25">
+    <title>Please describe your identity below:</title>
+  </text>
+
+  <suspend/>
+
+  <number 
+   label="S_Age"
+   optional="0"
+   randomize="0"
+   size="3"
+   ss:postText="years old"
+   verify="range(0,99)">
+    <title>Please type in your age below.</title>
+  </number>
+
+  <suspend/>
+
+  <term label="TERM_Age" cond="not(S_Age.check('18-99'))">Age</term>
+
+  <suspend/>
+
+  <select 
+   label="STANDARD_ETHNICITY"
+   randomize="0"
+   shuffle="choices">
+    <title>Which of the following best describes you?</title>
+    <comment><i>Select one response.</i></comment>
+    <choice label="eth1">Asian or Pacific Islander</choice>
+    <choice label="eth2">Black or African American, or Black British</choice>
+    <choice label="eth3">Hispanic or Latino</choice>
+    <choice label="eth4">Native American or Alaskan Native</choice>
+    <choice label="eth5">White or Caucasian</choice>
+    <choice label="eth6" randomize="0">Multiracial or Biracial</choice>
+    <choice label="eth7" randomize="0">Prefer to self-identify</choice>
+    <choice label="eth8" randomize="0">Prefer not to answer</choice>
+  </select>
+
+  <suspend/>
+
+  <term label="TERM_Ethnicity" cond="(STANDARD_ETHNICITY.eth8)">Refused Ethnicity</term>
+
+  <text 
+   label="SelfIdentifyEthnicity_OE"
+   cond="STANDARD_ETHNICITY.eth7"
+   optional="0"
+   randomize="0"
+   size="25">
+    <title>Please describe your ethnicity below:</title>
+  </text>
+
+  <suspend/>
+
+  <checkbox 
+   label="STANDARD_ETHNICITY2"
+   cond="STANDARD_ETHNICITY.eth6"
+   atleast="1"
+   atm1d:showInput="0"
+   atm1d:viewMode="tiled"
+   randomize="0"
+   uses="atm1d.9">
+    <title>Please select all of the following that describe you.</title>
+    <comment><i>Select all that apply.</i></comment>
+    <row label="eth1">Asian or Pacific Islander</row>
+    <row label="eth2">Black or African American, or Black British</row>
+    <row label="eth3">Hispanic or Latino</row>
+    <row label="eth4">Native American or Alaskan Native</row>
+    <row label="eth5">White or Caucasian</row>
+    <row label="eth6" exclusive="1">Prefer to self-identify</row>
+    <row label="eth7" exclusive="1">I prefer not to answer</row>
+  </checkbox>
+
+  <suspend/>
+
+  <term label="TERM_Ethnicity2" cond="(STANDARD_ETHNICITY2.eth7)">Refused Ethnicity 2</term>
+
+  <text 
+   label="SelfIdentifyEthnicity2_OE"
+   cond="STANDARD_ETHNICITY2.eth6"
+   optional="0"
+   randomize="0"
+   size="25">
+    <title>Please describe your ethnicity below:</title>
+  </text>
+
+  <suspend/>
+
+  <radio 
+   label="S_Frequency"
+   cardrating:lrg_maxwidth="120px"
+   cardrating:navigation="0"
+   cardrating:progress="0"
+   randomize="0"
+   shuffle="rows"
+   uses="cardrating.1">
+    <title>How often have you purchased products in each of the following categories?</title>
+    <comment><i>Select one response per category.</i></comment>
+    <row label="r1">[pipe: Clutter1] Products</row>
+    <row label="TB">[pipe: Category]</row>
+    <row label="r3">[pipe: Clutter2] Products</row>
+    <col label="c1"><b>Once a week</b></col>
+    <col label="c2"><b>Once every 2 weeks</b></col>
+    <col label="c3"><b>Once a month</b></col>
+    <col label="c4"><b>Once every 2 or 3 months</b></col>
+    <col label="c5"><b>Once every 6 months</b></col>
+    <col label="c6"><b>Once a year</b></col>
+    <col label="c7"><b>Never</b></col>
+    <style name="question.after"><![CDATA[
+<script>
+/*Card rating*/
+
+ if($ (".sq-cardrating-button").length){
+      $ ("#btn_continue").hide();
+    }
+  
+  var qn = ${jsexport()}; //returns json object of the question
+    console.log(qn.rows) //loads question variables into a console tool
+  var num_attr = qn.rows.length
+  console.log(num_attr);
+  var iteration = 1 
+  
+   $ (document).on('click', '.sq-cardrating-buttons', function() {
+          if(iteration == num_attr){
+            $ ("#btn_continue").click();
+          }
+          iteration++;
+        })
+  </script>
+]]></style>
+  </radio>
+
+  <suspend/>
+
+  <term label="TERM_Freq" cond="S_Frequency.TB.c6 or S_Frequency.TB.c7">Category Frequency</term>
+
+  <suspend/>
+
+  <autofill label="FreqQual" randomize="0" where="execute,survey,report">
+    <title>Frequency Qualifier</title>
+    <row label="r1" autofill="not(S_Frequency.r1.c6 or S_Frequency.r1.c7)">[pipe: Clutter1]</row>
+    <row label="r3" autofill="not(S_Frequency.TB.c6 or S_Frequency.TB.c7)">[pipe: Category]</row>
+    <row label="r2" autofill="not(S_Frequency.r3.c6 or S_Frequency.r3.c7)">[pipe: Clutter2]</row>
+  </autofill>
+
+  <suspend/>
+
+  <radio 
+   label="v_FreqClutter1"
+   randomize="0">
+    <title>Virtual for Weighting - [pipe: Clutter1] Frequency - DO NOT MODIFY</title>
+    <virtual>
+if S_Frequency.r1.c1:  data.val=0
+if S_Frequency.r1.c2:  data.val=1
+if S_Frequency.r1.c3:  data.val=2
+if S_Frequency.r1.c4:  data.val=3
+if S_Frequency.r1.c5:  data.val=4
+if S_Frequency.r1.c6:  data.val=5
+if S_Frequency.r1.c7:  data.val=6
+    </virtual>
+
+    <row label="r1">Once a week</row>
+    <row label="r2">Once every 2 weeks</row>
+    <row label="r3">Once a month</row>
+    <row label="r4">Once every 2 or 3 months</row>
+    <row label="r5">Once every 6 months</row>
+    <row label="r6">Once a year</row>
+    <row label="r7">Never</row>
+  </radio>
+
+  <radio 
+   label="v_FreqClutter2"
+   randomize="0">
+    <title>Virtual for Weighting - [pipe: Clutter2] Frequency - DO NOT MODIFY</title>
+    <virtual>
+if S_Frequency.r3.c1:  data.val=0
+if S_Frequency.r3.c2:  data.val=1
+if S_Frequency.r3.c3:  data.val=2
+if S_Frequency.r3.c4:  data.val=3
+if S_Frequency.r3.c5:  data.val=4
+if S_Frequency.r3.c6:  data.val=5
+if S_Frequency.r3.c7:  data.val=6
+    </virtual>
+
+    <row label="r1">Once a week</row>
+    <row label="r2">Once every 2 weeks</row>
+    <row label="r3">Once a month</row>
+    <row label="r4">Once every 2 or 3 months</row>
+    <row label="r5">Once every 6 months</row>
+    <row label="r6">Once a year</row>
+    <row label="r7">Never</row>
+  </radio>
+
+  <radio 
+   label="v_FreqTest"
+   randomize="0">
+    <title>Virtual for Weighting - [pipe: Category] Frequency - DO NOT MODIFY</title>
+    <virtual>
+if S_Frequency.TB.c1:  data.val=0
+if S_Frequency.TB.c2:  data.val=1
+if S_Frequency.TB.c3:  data.val=2
+if S_Frequency.TB.c4:  data.val=3
+if S_Frequency.TB.c5:  data.val=4
+if S_Frequency.TB.c6:  data.val=5
+if S_Frequency.TB.c7:  data.val=6
+    </virtual>
+
+    <row label="r1">Once a week</row>
+    <row label="r2">Once every 2 weeks</row>
+    <row label="r3">Once a month</row>
+    <row label="r4">Once every 2 or 3 months</row>
+    <row label="r5">Once every 6 months</row>
+    <row label="r6">Once a year</row>
+    <row label="r7">Never</row>
+  </radio>
+
+  <suspend/>
+
+  <block label="Category2" builder:title="TestCat">
+    <checkbox 
+    label="S_Brand_PastPurchased2"
+    atleast="1"
+    atm1d:showInput="0"
+    atm1d:viewMode="tiled"
+    randomize="0"
+    uses="atm1d.9">
+      <title>Which brand or brands of <b>[pipe: Category]</b> have you purchased in the past <b>6</b> months?</title>
+      <comment><i>Select all that apply.</i></comment>
+      <row label="r1">Emergen-C</row>
+      <row label="r2">Airborne</row>
+      <row label="r3">Zarbee's Naturals</row>
+      <row label="r4">Nature's Way Vitamin C</row>
+      <row label="r5">Nature's Bounty Vitamin C</row>
+      <row label="r6">Nature Made Vitamin C</row>
+      <row label="r7">Sambucol</row>
+      <row label="r8">Vital Proteins</row>
+      <row label="r9">Ester-C</row>
+      <row label="r10">Store Brand/Private Label</row>
+      <row label="r11">Other</row>
+    </checkbox>
+
+    <suspend/>
+
+    <autofill label="S_Brand_PastPurchased" randomize="0" where="execute,survey,report">
+      <title>Usage Past Purchased (P3M, P6M, P12M) - User/Non User for Database</title>
+      <row label="TB" autofill="S_Brand_PastPurchased2.r1">TestBrand User - all test brands netted</row>
+      <row label="NonUser" autofill="S_Brand_PastPurchased.count==0">TestBrand NON User</row>
+    </autofill>
+
+    <suspend/>
+
+    <radio 
+    label="S_Brand_BUMO2"
+    atm1d:showInput="0"
+    atm1d:viewMode="tiled"
+    randomize="0"
+    rowCond="S_Brand_PastPurchased2[row.index]"
+    uses="atm1d.9">
+      <title>And which one brand of <b>[pipe: Category]</b> have you purchased most often in the past <b>6</b> months?</title>
+      <comment><i>Select one response.</i></comment>
+      <row label="r1">Emergen-C</row>
+      <row label="r2">Airborne</row>
+      <row label="r3">Zarbee's Naturals</row>
+      <row label="r4">Nature's Way Vitamin C</row>
+      <row label="r5">Nature's Bounty Vitamin C</row>
+      <row label="r6">Nature Made Vitamin C</row>
+      <row label="r7">Sambucol</row>
+      <row label="r8">Vital Proteins</row>
+      <row label="r9">Ester-C</row>
+      <row label="r10">Store Brand/Private Label</row>
+      <row label="r11">Other</row>
+    </radio>
+
+    <suspend/>
+
+    <autofill label="S_Brand_BUMO" randomize="0" where="execute,survey,report">
+      <title>BUMO - User/Non User for Database</title>
+      <row label="TB" autofill="S_Brand_BUMO2.r1">TestBrand User - all test brands netted</row>
+      <row label="NonUser" autofill="S_Brand_BUMO.count==0">TestBrand NON User</row>
+    </autofill>
+
+    <suspend/>
+
+    <checkbox 
+    label="S_Brand_NonRejecter2"
+    cond="0"
+    atleast="1"
+    atm1d:showInput="0"
+    atm1d:viewMode="tiled"
+    randomize="0"
+    uses="atm1d.9">
+      <title>Please select the brand(s) of <b>[pipe: Category]</b> that you would <u><strong>NOT</strong></u> consider purchasing in the future.</title>
+      <comment><i>Select all that apply.</i></comment>
+      <row label="r1">Emergen-C</row>
+      <row label="r2">Airborne</row>
+      <row label="r3">Zarbee's Naturals</row>
+      <row label="r4">Nature's Way Vitamin C</row>
+      <row label="r5">Nature's Bounty Vitamin C</row>
+      <row label="r6">Nature Made Vitamin C</row>
+      <row label="r7">Sambucol</row>
+      <row label="r8">Ester-C</row>
+      <row label="r9">Store Brand/Private Label</row>
+      <row label="r10">Other</row>
+      <row label="None" cond="1" exclusive="1">None, I would consider all</row>
+    </checkbox>
+
+    <suspend/>
+
+    <term label="TERM_TestRejecter" cond="S_Brand_NonRejecter2.r1">Rejecter</term>
+
+    <suspend/>
